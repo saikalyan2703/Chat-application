@@ -8,13 +8,17 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import {UserAuthService} from './services/user-auth.service';
+import { HomeComponent } from './home/home.component';
+import {AuthGuardService} from './services/auth-guard.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +27,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     ReactiveFormsModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [UserAuthService, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

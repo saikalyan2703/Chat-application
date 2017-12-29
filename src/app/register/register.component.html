@@ -1,8 +1,22 @@
 <div class="container">
 
+  <div *ngIf="messageFlag=='success'" class="row">
+    <div class="alert alert-success alert-dismissable col-md-offset-6 col-md-4">
+      <a (click)="messageFlag=null" class="close" aria-label="close">&times;</a>
+      <strong class="col-md-offset-4">Signup successful</strong>
+    </div>
+  </div>
+
+  <div *ngIf="messageFlag=='error'" class="row">
+    <div class="alert alert-danger alert-dismissable col-md-offset-6 col-md-4">
+      <a (click)="messageFlag=null" class="close" aria-label="close">&times;</a>
+      <strong class="col-md-offset-4">User already exists</strong>
+    </div>
+  </div>
+
   <div class="row">
     <div class="col-md-offset-4 col-md-8">
-        <form [formGroup]="registerForm" novalidate>
+        <form [formGroup]="registerForm" (ngSubmit)='registerUser(registerForm.value)' novalidate>
 
             <div class="form-group">
               <label for="firstName">First Name:</label>

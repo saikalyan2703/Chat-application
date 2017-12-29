@@ -3,6 +3,10 @@ import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
 import { Validators } from '@angular/forms/src/validators';
 import {slideInDownAnimation} from '../animations';
 import { FormControl } from '@angular/forms/src/model';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
+
+import {User} from '../user';
+import {UserAuthService} from '../services/user-auth.service';
 
 @Component({
   selector: 'app-register',
@@ -25,7 +29,10 @@ export class RegisterComponent implements OnInit {
   cpasswordFlag:boolean = false;
   cpasswordStatus:string = "Show password";
 
-  constructor(private fb: FormBuilder) { 
+  registerFlag:string;
+  messageFlag:string;
+
+  constructor(private fb: FormBuilder, private _userService:UserAuthService) { 
   }
 
   ngOnInit() {
@@ -68,5 +75,21 @@ export class RegisterComponent implements OnInit {
     this.cpasswordFlag = !this.cpasswordFlag;
     this.cpasswordStatus = this.cpasswordStatus==='Show password'? 'Hide password':'Show password';
   }
+
+  registerUser(user:User){
+    console.log(user);
+    this._userService.addUser(user).subscribe(res=>{
+      console.log(res.flag);
+      if(res.flag=='success'){
+        this.registerForm.reset();
+        this.registerFlag='success';
+        this.messageFlag = 'success';
+      }
+      else{
+        this.messageFlag = 'error';
+        this.registerFlag='error';
+      }
+  });
+  }  
 
 }

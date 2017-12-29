@@ -1,0 +1,22 @@
+<div class="container">
+
+  <div style="margin-top:20px" class="row">
+    <div class="col-md-offset-6">
+        <button (click)="logout()" type="button" class="btn btn-info">Logout</button>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-3">
+        <div *ngFor="let user of users">
+            <button class="btn btn-primary">{{user.firstname + " " + user.lastname}}</button>
+        </div>
+    </div>
+
+    <div style="height:300px;border:1px solid black" class="col-md-8">
+
+    </div>
+  </div>
+
+</div>

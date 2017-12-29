@@ -1,17 +1,45 @@
 <div class="container">
 
     <div class="row">
+
+        <div *ngIf="messageFlag=='error email'" class="row">
+            <div class="alert alert-danger alert-dismissable col-md-offset-6 col-md-4">
+              <a (click)="messageFlag=null" class="close" aria-label="close">&times;</a>
+              <strong class="col-md-offset-4">Email is not registered.</strong>
+            </div>
+          </div>
+
+          <div *ngIf="messageFlag=='error password'" class="row">
+              <div class="alert alert-danger alert-dismissable col-md-offset-6 col-md-4">
+                <a (click)="messageFlag=null" class="close" aria-label="close">&times;</a>
+                <strong class="col-md-offset-4">Entered password is not valid.</strong>
+              </div>
+            </div>
+
       <div class="col-md-offset-4 col-md-8">
-          <form>
+          <form [formGroup]="loginForm" (ngSubmit)='getUser(loginForm.value)' novalidate>
 
               <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" formControlName="email">
+                <div [@errorDisplay] *ngIf="loginForm.get('email').hasError('required') && loginForm.get('email').touched" class="alert alert-danger">
+                  <strong>Please enter email.</strong>
+                </div>
+                <div [@errorDisplay] *ngIf="loginForm.get('email').hasError('pattern') && loginForm.get('email').touched" class="alert alert-danger">
+                    <strong>Email is not in correct pattern.</strong>
+                  </div>
               </div>
           
               <div class="form-group">
                 <label for="pwd">Password:</label>
-                <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+                <span class="pull-right" style="color:lightskyblue" (click)="passwordTrigger()">{{passwordStatus}}</span>
+                <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd" formControlName="pwd">
+                <div [@errorDisplay] *ngIf="passwordFlag">
+                  <input class="form-control" type="text" [value]="loginForm.get('pwd').value" disabled>
+                </div>
+                <div [@errorDisplay] *ngIf="loginForm.get('pwd').hasError('required') && loginForm.get('pwd').touched" class="alert alert-danger">
+                  <strong>Please enter password.</strong>
+                </div>
               </div>
           
               <button type="submit" class="btn btn-default">Login</button>
