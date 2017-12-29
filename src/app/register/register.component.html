@@ -1,0 +1,69 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-offset-4 col-md-8">
+        <form [formGroup]="registerForm" novalidate>
+
+            <div class="form-group">
+              <label for="firstName">First Name:</label>
+              <input type="text" class="form-control" id="firstName" placeholder="Enter first name" name="firstName" formControlName="firstName">
+              <div [@errorDisplay] *ngIf="registerForm.get('firstName').touched && registerForm.get('firstName').hasError('required')" class="alert alert-danger">
+                <strong>Please enter first name.</strong>
+              </div>
+            </div>
+        
+            <div class="form-group">
+              <label for="lastName">Last Name:</label>
+              <input type="text" class="form-control" id="lastName" placeholder="Enter last name" name="lastName" formControlName="lastName">
+              <div [@errorDisplay] *ngIf="registerForm.get('lastName').hasError('required') && registerForm.get('lastName').touched" class="alert alert-danger">
+                  <strong>Please enter last name.</strong>
+                </div>
+            </div>
+        
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" class="form-control" id="email" placeholder="Enter email" formControlName="email">
+              <div [@errorDisplay] *ngIf="registerForm.get('email').hasError('required') && registerForm.get('email').touched" class="alert alert-danger">
+                  <strong>Please enter email.</strong>
+                </div>
+                <div [@errorDisplay] *ngIf="registerForm.get('email').hasError('pattern') && registerForm.get('email').touched" class="alert alert-danger">
+                    <strong>Email is not in correct pattern.</strong>
+                  </div>
+            </div>
+
+            <div formGroupName="password">
+              <div class="form-group">
+                <label for="pwd">Password:</label>
+                <span class="pull-right" style="color:lightskyblue" (click)="passwordTrigger()">{{passwordStatus}}</span>
+                <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd" formControlName="pwd">
+                <div [@errorDisplay] *ngIf="passwordFlag">
+                  <input class="form-control" type="text" [value]="registerForm.get('password.pwd').value" disabled>
+                </div>
+                <div [@errorDisplay] *ngIf="registerForm.get('password.pwd').hasError('required') && registerForm.get('password.pwd').touched" class="alert alert-danger">
+                  <strong>Please enter password.</strong>
+                </div>
+                <div [@errorDisplay] *ngIf="registerForm.get('password.pwd').hasError('minlength') && registerForm.get('password.pwd').touched" class="alert alert-danger">
+                    <strong>Password must be atleast 4 characters.</strong>
+                  </div>
+              </div>
+          
+              <div class="form-group">
+                <label for="cpwd">Confirm Password:</label>
+                <span class="pull-right" style="color:lightskyblue" (click)="cpasswordTrigger()">{{cpasswordStatus}}</span>
+                <input type="password" class="form-control" id="cpwd" placeholder="Repeat password" name="cpwd" formControlName="cpwd">
+                <div [@errorDisplay] *ngIf="cpasswordFlag">
+                  <input class="form-control" type="text" [value]="registerForm.get('password.cpwd').value" disabled>
+                </div>
+                <div [@errorDisplay] *ngIf="!registerForm.get('password').valid && registerForm.get('password.cpwd').touched" class="alert alert-danger">
+                    <strong>Passwords not matched.</strong>
+                  </div>
+              </div>
+            </div>
+        
+            <button [disabled]="!registerForm.valid" type="submit" class="btn btn-default">Sign Up</button>
+            <a class="pull-right" routerLink="/login">Already a user?</a>
+          </form>
+
+    </div>
+  </div>
+</div>
