@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
     this._userService.getUser(user).subscribe(res=>{
       console.log(res.flag);
       if(res.flag=='success'){
-        this.router.navigate(['/home']);
+        this.router.navigate(['/chat']);
       }
       if(res.flag=='error password'){
         this.loginFlag='error password';

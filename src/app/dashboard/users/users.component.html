@@ -1,0 +1,24 @@
+<div class="container">
+
+    <div style="margin-top:20px" class="row">
+        <div class="col-md-offset-6">
+            <button (click)="logout()" type="button" class="btn btn-info">Logout</button>
+        </div>
+      </div>
+
+  <div class="row">
+    
+    <div class="col-md-3">
+        <h2> Users online:</h2>
+        <div *ngFor="let user of users">
+            <button (click)="displayChat(user.email)" class="btn btn-primary">{{user.firstname + " " + user.lastname}}</button>
+        </div>
+    </div>
+
+    <div class="col-md-offset-2 col-md-7">
+        <router-outlet></router-outlet>
+    </div>
+
+  </div>
+
+</div>

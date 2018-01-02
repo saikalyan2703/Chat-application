@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const User = require('../models/user');
+const Chat = require('../models/chat');
 
 const db = "mongodb://saikalyan2703:saikalyan2703@ds133627.mlab.com:33627/strangerchatapplication";
 mongoose.Promise = global.Promise;
@@ -89,5 +90,20 @@ router.post('/logout', function(req, res){
         res.json({flag:"success"});
     });
 });
+
+router.post('/chat', function(req, res){
+    console.log('Get chat');
+    var newChat = new Chat();
+    newChat.from = req.body.from;
+    newChat.to = req.body.to;
+    console.log(newChat.from);
+    console.log(newChat.to);
+    Chat.find({$or: [{$and:[{"from":newChat.from},{"to":newChat.to}]}, {$and:[{"from":newChat.to},{"to":newChat.from}]}]})
+    .exec(function(err, chat){
+        console.log(chat);
+        res.json(chat);
+    })
+
+})
 
 module.exports = router;

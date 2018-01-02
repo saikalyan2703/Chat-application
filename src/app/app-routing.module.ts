@@ -11,6 +11,11 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent,  canActivate: [AuthGuardService]},
+  {
+    path: 'chat',
+    loadChildren: 'app/dashboard/dashboard.module#DashboardModule',
+    canActivate: [AuthGuardService]
+  },
   { path: '',   redirectTo: '/register', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent }
 ];
