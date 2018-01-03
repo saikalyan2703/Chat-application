@@ -8,14 +8,16 @@
 
   <div class="row">
     
-    <div class="col-md-3">
+    <div class="col-md-1">
         <h2> Users online:</h2>
-        <div *ngFor="let user of users">
-            <button (click)="displayChat(user.email)" class="btn btn-primary">{{user.firstname + " " + user.lastname}}</button>
+        {{numberOfOnlineUsers}}
+        
+        <div *ngFor="let user of loginUsers">
+                <button (click)="displayChat(user)" class="btn btn-primary">{{user}}</button>
         </div>
     </div>
 
-    <div class="col-md-offset-2 col-md-7">
+    <div class="col-md-offset-2 col-md-9">
         <router-outlet></router-outlet>
     </div>
 

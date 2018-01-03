@@ -9,7 +9,6 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import {UserAuthService} from './services/user-auth.service';
-import { HomeComponent } from './home/home.component';
 import {AuthGuardService} from './services/auth-guard.service';
 import {DashboardModule} from './dashboard/dashboard.module';
 
@@ -18,8 +17,7 @@ import {DashboardModule} from './dashboard/dashboard.module';
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    NotFoundComponent,
-    HomeComponent
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

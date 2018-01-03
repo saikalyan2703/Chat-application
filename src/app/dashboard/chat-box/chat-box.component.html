@@ -1,15 +1,25 @@
 <h2>Chat Box:</h2>
 
-<div *ngFor = "let messages of chat">
-    <div *ngIf = "messages.from==user">
-        <p class="col-md-offset-9" *ngFor = "let message of messages.messages">{{message}}</p>
-    </div>
-    <div *ngIf = "messages.from!=user">
-            <p *ngFor = "let message of messages.messages">{{message}}</p>
-        </div>
+<div class="col-md-5">
+        <div *ngFor = "let messages of chat">
+                <div *ngIf = "messages.from!=user">
+                        <div *ngFor = "let message of messages.messages">
+                                <p style="margin-right:100px;;background-color:lightgreen">{{message}}</p>
+                            </div>
+                    
+                        
+                    </div>
+            
+                    <div *ngIf = "messages.from==user">
+                            <div  *ngFor = "let message of messages.messages">
+                                    <p style="margin-left:150px;background-color:wheat">{{message}}</p>
+                            </div>
+                            
+                        </div>
+            </div>
 </div>
 
-<div class="col-md-12">
-    <input type="text" name="msg" id="msg">
-    <button class="btn">Send message</button>
+<div class="row">
+    <input [(ngModel)]="message" type="text" name="msg" id="msg">
+    <button (click)="sendMessage()" class="btn">Send message</button>
 </div>

@@ -1,8 +1,14 @@
 const express = require('express');
+const http = require('http');
+const socketIO = require('socket.io');
 const router = express.Router();
 const mongoose = require('mongoose');
 const User = require('../models/user');
 const Chat = require('../models/chat');
+
+const app = express();
+const server = http.createServer(app);
+const io = socketIO(server);
 
 const db = "mongodb://saikalyan2703:saikalyan2703@ds133627.mlab.com:33627/strangerchatapplication";
 mongoose.Promise = global.Promise;
@@ -30,8 +36,6 @@ router.post('/login', function(req, res){
         else {
             if(user[0].password==newUser.password){
                 User.findOneAndUpdate({"email":newUser.email},{ $set: { "firstname": "acde","lastname":user[0].lastname, "email":user[0].email,"password": user[0].password,"status":"1" }}, function(err,updatedUser){
-                    console.log(user);
-                    console.log(updatedUser);
                     res.json({flag:"success",user:updatedUser});
                 });
             }
@@ -72,21 +76,11 @@ router.post('/register', function(req, res){
 
 });
 
-router.get('/users', function(req, res){
-    console.log('Extracting online users');
-    User.find({$and:[{"status":"1"},{"email":{$ne:"saikalyan2703@gmail.com"}}]},{password: false, _id: false, status: false})
-    .exec(function(err, users){
-        console.log(users);
-        res.json(users);
-    });
-});
-
 router.post('/logout', function(req, res){
     console.log('Logout');
     var newUser = new User();
     newUser.email = req.body.email;
     User.findOneAndUpdate({"email":newUser.email},{ $set: { "status":"0" }}, function(err,updatedUser){
-        console.log(updatedUser);
         res.json({flag:"success"});
     });
 });
@@ -100,10 +94,26 @@ router.post('/chat', function(req, res){
     console.log(newChat.to);
     Chat.find({$or: [{$and:[{"from":newChat.from},{"to":newChat.to}]}, {$and:[{"from":newChat.to},{"to":newChat.from}]}]})
     .exec(function(err, chat){
-        console.log(chat);
+        // console.log(chat);
         res.json(chat);
     })
 
-})
+});
+
+router.post('/message', function(req, res){
+    console.log('Send message');
+    var newChat = new Chat();
+    newChat.from = req.body.from;
+    newChat.to = req.body.to;
+    newChat.message = req.body.msg;
+    Chat.find({$and:[{"from":newChat.from},{"to":newChat.to}]},{"messages":1,_id:0})
+    .exec(function(err, chat){
+        chat[0].messages.push(newChat.message);
+        Chat.findOneAndUpdate({$and:[{"from":newChat.from},{"to":newChat.to}]},{ $set: { "messages":chat[0].messages }}, function(err,updatedChat){
+            res.json({flag:"success"});
+        });
+    });
+
+});
 
 module.exports = router;

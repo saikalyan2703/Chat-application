@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
+import * as io from 'socket.io-client';
 
 import {User} from '../user';
 
@@ -11,8 +12,11 @@ export class UserAuthService {
   private _loginUrl = "/api/login";
   private _logoutUrl = "/api/logout";
   private _getusersUrl = "/api/users";
+  socket:any;
 
-  constructor(private _http: Http) { }
+  constructor(private _http: Http) {
+    this.socket = io();
+   }
 
   addUser(user:User){
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -39,11 +43,6 @@ export class UserAuthService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     return this._http.post(this._logoutUrl, JSON.stringify({'email':email}), options)
-      .map((response: Response) => response.json());
-  }
-
-  getUsers(){
-    return this._http.get(this._getusersUrl)
       .map((response: Response) => response.json());
   }
 
